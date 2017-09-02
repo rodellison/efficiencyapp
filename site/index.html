@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ng-app="EfficiencyApp" >
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>
+		Statements Team Efficiency App
+	</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/chosen.css">
+
+
+<link href='https://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'><!--Body, serif font-->
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'> <!--Header, sans-serif font-->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" ><!--For the contact icons-->
+
+    <!--A bunch of different favicons in various resolutions -files generated using:   http://www.favicon-generator.org/ -->
+    <link rel="apple-touch-icon" sizes="57x57" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="https://de5r9isptlwr1.cloudfront.net/site/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/favicon-16x16.png">
+    <link rel="manifest" href="https://de5r9isptlwr1.cloudfront.net/site/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="https://de5r9isptlwr1.cloudfront.net/site/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+</head>
+
+<body id="page-top" onscroll="navTransparencyChange()">
+
+<div id="content">
+
+    <nav id="newnavbar">
+        <p>Efficiency App</p>
+        <ul ng-controller="navController as nav" id="menu">
+            <!--These links are loaded in "backwards" since they float right to left,
+            so the ones on top in the code are furthest to the right-->
+             <li ng-repeat="link in nav.links" class="clickForScroll">
+                <a class="nav-link" href="{{link.URL}}" >{{link.linkName}} </a>
+            </li>
+
+        </ul>
+        <label for="show-menu" class="show-menu" id="show-menu"><img src="https://de5r9isptlwr1.cloudfront.net/site/images/menu.svg" alt="Menu"></label>
+    </nav>
+
+
+    <div class="slide-container">
+        <div ng-view  id="slide" class="slide"></div>
+    </div> <!--slide-container div-->
+    <div ng-controller="contentController as content"></div>
+
+</div> <!--content div-->
+
+</body>
+
+<!--scripts go here-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.js"></script>
+
+<script src="js/controllers.js"></script>
+<script src="js/script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src='js/crossfilter.js' type='text/javascript'></script>
+<script src='js/d3.js' type='text/javascript'></script>
+<script src='js/dc.js' type='text/javascript'></script>
+<script src='js/queue.js' type='text/javascript'></script>
+<script src="js/w3data.js"></script>
+<script src="js/chosen.jquery.js" type="text/javascript"></script>
+
+
+</body>
+</html>

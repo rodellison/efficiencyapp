@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "RodEllisonSite-executor",
+    "name": "RodEllisonSite",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "6jw7xflesd"
+  }
+}
