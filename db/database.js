@@ -3,10 +3,10 @@ var myPropParser = require("properties-parser");
 
 var pool;
 
-function getPropsData (myPropFile, cb) {
+function getPropsData(myPropFile, cb) {
 
     console.log("Inside getPropsData");
-    myPropFile.read("./mysql.properties", function(error, data) {
+    myPropFile.read("./mysql.properties", function (error, data) {
         if (error) throw error;
 
         console.log("calling Callback function");
@@ -17,7 +17,7 @@ function getPropsData (myPropFile, cb) {
 
 getPropsData(myPropParser, function (data) {
 
-    console.log ("Inside pool callback");
+    console.log("Inside pool callback");
 
     pool = mysql.createPool({
         connectionLimit: 5,
@@ -40,9 +40,9 @@ getPropsData(myPropParser, function (data) {
 
 });
 
-var getConnection = function(callback) {
+var getConnection = function (callback) {
 
-    pool.getConnection(function(err, connection) {
+    pool.getConnection(function (err, connection) {
         callback(err, connection);
     });
 

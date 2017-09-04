@@ -75,35 +75,39 @@ function doConfirm(msg, yesFn, noFn)
 	confirmBox.show();
 }
 
-function myTest() {
-
-	alert("test");
-
-};
 
 function submitToolsUsed() {
 
-	doConfirm("Are you sure?",
-	function yes()
-	{
-	 window.location.href = "#/thanks";
-	 var element = document.getElementById("whichTool");
-	 element.innerHTML = "Thank you for using the " + whichService + " tool! - You've just help save " + valueSaved;
-	//alert("Yes")
-	},
-	function no()
-	{
-	whichService = null;
-		//alert("No")
-	});
+    doConfirm("Are you sure?",
+        function yes() {
+            //$jquery post call here to record user's selections
+            var selectedItems = $("#AutomationTypeSelect").chosen().val();
+            if (selectedItems.length === 0) {
+                alert("No items selected!");
+            } else {
+                // console.log(tempString);
+                $.post("/AddSelections",
+                    {
+                        selectedItems: selectedItems
+                    },
+                    function (status) {
+                        if (!status === 200) {
+                            alert("Sorry!, a problem occurred attempting to insert records at the server side: " + status);
+                        } else {
+                            //Happy path
+                            window.location.href = "#/thanks";
+                        }
+                    });
+            }
+
+        },
+        function no() {
+            whichService = null;
+            //alert("No")
+        });
 }
 
 //************************************************************** - Developer.html Scripts
-var ndxIAFilters;
-var axpApp;
-var toolName;
-var axpEnvironment;
-var axpApp;
 
 var AutomationTypesLookupArray = {};
 
@@ -114,30 +118,14 @@ function logOutput(message) {
 function setupAutomationTypesFilter(error, apiData) {
 
   var dataSet = apiData;
-
   //console.log(dataSet);
 
   logOutput("Inside setupAutomationTypesFilter");
 
-  //Create a Crossfilter instance
-  ndxIAFilters = crossfilter(dataSet);
-
-	/*
-	 //Define Dimensions
-	 iaCode = ndxIAFilters.dimension(function (d) {
-	 return d.IADetails.IA_Code;
-	 });
-	 iaDescription = ndxIAFilters.dimension(function (d) {
-	 return d.IADetails.IA_Online_Name;
-	 });
-
-	 */
   var AutomationTypeSelect = $("#AutomationTypeSelect");
-  //Establish blank option
-   AutomationTypeSelect.append($("<option />").val(" ").text(" "));
 
-  console.log("Loading Automation Types array")
   //Build AutomationTypesLookupArray
+    console.log("Loading Automation Types array")
   dataSet.forEach(function (d) {
  // 	console.log(d);
     var valueToAdd = {};
@@ -149,8 +137,8 @@ function setupAutomationTypesFilter(error, apiData) {
     valueToAdd.SaveHours = d.SaveHours;
     valueToAdd.Description = d.Description;
 
-    AutomationTypeSelect.append($("<option />").val(d.ToolName).text(d.AxpApp + "-" + d.ToolName));
-    AutomationTypesLookupArray[d.ToolName] = valueToAdd;
+    AutomationTypeSelect.append($("<option />").val(d.AutomationID).text(d.AxpApp + "-" + d.ToolName));
+    AutomationTypesLookupArray[d.AutomationID] = valueToAdd;
 
   });
 
@@ -158,9 +146,7 @@ function setupAutomationTypesFilter(error, apiData) {
 
   //Setup handlers for Selects when things change
   $("#AutomationTypeSelect").chosen({}).change(function (event, params) {
-    logOutput("AutomationTypeSelect change chosen function entered");
-
-    if (params.selected != 'All') {
+  //  logOutput("AutomationTypeSelect change chosen function entered");
       var count = $("#AutomationTypeSelect :selected").length;
 
       if (count == 0) {
@@ -169,20 +155,7 @@ function setupAutomationTypesFilter(error, apiData) {
       } else {
         $('#AutomationTypeSelect.chosen-select option[value=" "]').prop('selected', false);
         $('#AutomationTypeSelect').trigger('chosen:updated');
-      }
-
-      logOutput($("#AutomationTypeSelect").chosen().val());
-
-
-    } else {
-      $('#AutomationTypeSelect option').prop('selected', false); // Selects all option
-      $('#AutomationTypeSelect.chosen-select option[value=" "]').prop('selected', true);
-      $('#AutomationTypeSelect').trigger('chosen:updated');
-
-      logOutput("AutomationTypeSelect = All");
-
-    };
-
+      };
   });
 }
 
