@@ -159,17 +159,47 @@ function setupAutomationTypesFilter(error, apiData) {
   });
 }
 
+function setupHomePageTotalSaved(error, apiData) {
+    var dataSet = apiData;
+    //console.log(dataSet);
 
-function getAutomationTypesData() {
+	console.log(dataSet);
+
+    logOutput("Inside setupHomePageTotalSaved, TotalSaved returned: " + dataSet.TotalSaved);
+    $("#hoursSaved").text(dataSet.TotalSaved);
+
+}
+
+
+function getDataForPage() {
 
   var currentPage = document.location.href;
+
+  console.log("Current page: " + currentPage)
+
   //Only want to make this call IF we're going into the Developer page
   if (currentPage.indexOf("developer") > 0) {
-    console.log("Calling to getAutomationTypesData");
+    console.log("Calling to get AutomationTypesData");
 
     queue()
         .defer(d3.json, "/AutomationTypes" )
         .await(setupAutomationTypesFilter);
+
+  } else {
+  	//either home, or the last char of the href being simply / mean we're at the home page, need to fetch the TotalSaves
+      if (currentPage.indexOf("home") > 0 || currentPage.charAt(currentPage.length - 1) === "/") {
+          console.log("Calling to get TotalSaved");
+          queue()
+              .defer(d3.json, "/TotalSaved" )
+              .await(setupHomePageTotalSaved);
+
+      } else {
+          if (currentPage.indexOf("reports") > 0) {
+
+
+
+		  }
+	  }
 
   }
 

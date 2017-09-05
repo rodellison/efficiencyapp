@@ -96,5 +96,40 @@ module.exports = function (app) {
         });
 
     });
+
+    // Handle get to fetch the total hours saved, for the home page display
+    app.get('/TotalSaved', function (req, res) {
+
+         createConnection(function (err, connection) {
+
+            if (err) {
+                console.log(err);
+                //Return to client a positive status code
+                res.sendStatus(500);
+            };
+
+                 var selectString = "SELECT SUM(AutomationTypes.SaveHours) AS TotalSaved FROM AutomationToolsTracking " +
+                     "INNER JOIN AutomationTypes ON AutomationToolsTracking.AutomationID=AutomationTypes.AutomationID";
+                 connection.query(selectString,
+                    function (error, result) {
+                        if (error)
+                        {
+                            res.sendStatus(500);
+                        }
+                        else {
+                            console.log("Releasing db connection.");
+                            //release the connection after we're done
+                            connection.release();
+                            //Return to client a positive status code
+                            //Return the result as a bunch of JSON Objects in a single array
+                            var resultString = result[0];
+                            res.json(resultString);
+                        }
+                    });
+
+        });
+    });
+
+
 };
 

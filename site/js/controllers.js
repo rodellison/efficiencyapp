@@ -28,7 +28,9 @@ angular.module('EfficiencyApp', [ 'ngRoute', 'ngAnimate'])
   $scope.$on('$viewContentLoaded', function(){
 
     // Run after view loaded.
-		getAutomationTypesData();
+	  //The home page needs to access MySQL Total Hours save value
+	  //The developer page needs to access MySQL to load the AutomationTypes
+      getDataForPage();
 
   });
 
@@ -37,7 +39,8 @@ angular.module('EfficiencyApp', [ 'ngRoute', 'ngAnimate'])
 .config(function($routeProvider) { //routing needs to be on a server in order to run
 	$routeProvider
 	.when('/',{
-		templateUrl: 'views/home.html',
+	templateUrl: 'views/home.html',
+    controller: 'contentController',
 	})
 	.when('/home',{
 	templateUrl: 'views/home.html',
