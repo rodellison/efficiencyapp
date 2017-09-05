@@ -163,10 +163,98 @@ function setupHomePageTotalSaved(error, apiData) {
     var dataSet = apiData;
     //console.log(dataSet);
 
-	console.log(dataSet);
-
     logOutput("Inside setupHomePageTotalSaved, TotalSaved returned: " + dataSet.TotalSaved);
     $("#hoursSaved").text(dataSet.TotalSaved);
+
+}
+
+
+
+function setupReports(error, ReportData) {
+    var ndx;
+    var timeStamps;
+    var teamName;
+    var toolName;
+    var axpEnvironment;
+    var axpApp;
+    var saveHours;
+    var timeStampsGroup;
+    var teamNameGroup;
+    var toolNameGroup;
+    var axpEnvironmentGroup;
+    var axpAppGroup;
+    var saveHoursGroup;
+
+    var toolFrequencyChart;
+    var appChart;
+    var envChart;
+    
+
+    var dataSet = ReportData;
+
+    logOutput("Inside setupReports: " );
+
+    console.log(dataSet);
+
+    ndx = crossfilter(dataSet);
+
+    timeStamps = ndx.dimension(function (d) {
+    	return d.TrackingTimeStamp;
+	})
+    teamName = ndx.dimension(function (d) {
+        return d.TeamName;
+    })
+    toolName = ndx.dimension(function (d) {
+        return d.ToolName;
+    })
+    axpEnvironment = ndx.dimension(function (d) {
+        return d.AxpEnvironment;
+    })
+    axpApp = ndx.dimension(function (d) {
+        return d.AxpApp;
+    })
+    saveHours = ndx.dimension(function (d) {
+        return d.SaveHours;
+    })
+
+
+    timeStampsGroup = timeStamps.group();
+    teamNameGroup = teamName.group();
+    toolNameGroup = toolName.group();
+    axpEnvironmentGroup = axpEnvironment.group();
+    axpAppGroup = axpApp.group();
+    saveHoursGroup = saveHours.group();
+
+    all = ndx.groupAll();
+
+
+    toolFrequencyChart = dc.rowChart("#toolRowChart")
+
+	toolFrequencyChart
+		.height (400)
+		.dimension (toolName)
+		.group (toolNameGroup)
+		.elasticX (true)
+		.xAxis ().ticks (4)
+
+	appChart = dc.pieChart('#appPieChart')
+		.height (400)
+		.radius (200)
+		.innerRadius (90)
+		.transitionDuration(1000)
+		.dimension(axpApp)
+		.group(axpAppGroup)
+
+    envChart = dc.pieChart('#envPieChart')
+        .height (400)
+        .radius (200)
+        .innerRadius (90)
+        .transitionDuration(1000)
+        .dimension(axpEnvironment)
+        .group(axpEnvironmentGroup)
+
+
+    dc.renderAll();
 
 }
 
@@ -195,8 +283,10 @@ function getDataForPage() {
 
       } else {
           if (currentPage.indexOf("reports") > 0) {
-
-
+              console.log("Calling to get Report Data");
+              queue()
+                  .defer(d3.json, "/ReportData" )
+                  .await(setupReports);
 
 		  }
 	  }

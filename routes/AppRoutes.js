@@ -130,6 +130,41 @@ module.exports = function (app) {
         });
     });
 
+    // Handle get to fetch the data needed for reports
+    app.get('/ReportData', function (req, res) {
+
+        createConnection(function (err, connection) {
+
+            if (err) {
+                console.log(err);
+                //Return to client a positive status code
+                res.sendStatus(500);
+            };
+
+            var selectString = "SELECT AutomationToolsTracking.TrackingTimeStamp, AutomationTypes.TeamName, " +
+                "AutomationTypes.ToolName, AutomationTypes.AxpApp, AutomationTypes.AxpEnvironment, " +
+                "AutomationTypes.SaveHours " +
+                "FROM AutomationToolsTracking " +
+                "INNER JOIN AutomationTypes ON AutomationToolsTracking.AutomationID=AutomationTypes.AutomationID";
+            connection.query(selectString,
+                function (error, result) {
+                    if (error)
+                    {
+                        res.sendStatus(500);
+                    }
+                    else {
+                        console.log("Releasing db connection.");
+                        //release the connection after we're done
+                        connection.release();
+                        //Return to client a positive status code
+                        //Return the result as a bunch of JSON Objects in a single array
+                       // console.log(result);
+                        res.json(result);
+                    }
+                });
+
+        });
+    });
 
 };
 
